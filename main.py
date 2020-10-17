@@ -1,3 +1,4 @@
+
 import csv
 import os
 import telebot
@@ -40,7 +41,7 @@ def get_questions(path, numbers):
         reader = csv.DictReader(csv_file, delimiter=";")
 
         for id, row in enumerate(reader):
-            if id+1 in numbers:
+            if id + 1 in numbers:
                 result.append([row["question"], row["answer"]])
     return result
 
@@ -84,11 +85,12 @@ def history_add(message):
 command = ["social_add"]
 @ebot.message_handler(commands=command)
 @ebot.edited_message_handler(commands=command)
-def history_add(message):
+def social_add(message):
     ebot.reply_to(message, "Вы хотите добавить вопрос/вопросы по обществознанию. Для этого отправьте все одним сообщением. Сообщение должно быть отформатированно так:\n\nВопрос[enter]\n[enter]\nОвтет[enter]\n[enter]\n[enter]\nВопрос[enter]\n[enter]\nОтвет[enter]\n[enter]\n[enter]\n\nИ так далее. \nНе обессудь брат братишка просто надо как-то разделить вопрос и ответ")
     msgs = fetch(MESSAGE_PATH)
     msgs[message.from_user.id] = ["Ожидание вопроса", "Общество"]
     store(MESSAGE_PATH, msgs)
+
 
 command = ["history_generate"]
 @ebot.message_handler(commands=command)
@@ -134,9 +136,6 @@ def social_generate(message):
     ebot.send_message(cid, "Если вы хотите изменить какой-то вопрос, то отправьте мне его номер по счету. За раз, вы сможете изменить только один вопрос.")
     msgs[message.from_user.id] = ["Возможна замена", valid_questions]
     store(MESSAGE_PATH, msgs)
-
-
-
 
 
 @ebot.message_handler(func=lambda m: True)
@@ -192,7 +191,7 @@ def echo_all(message):
         new_f_c, new_s_c = message.text.split["\n\n"]
         last_f_c, last_s_c = new_questions[-1]
 
-        new_questions[num-1] = [f"*{new_f_c}*", f"({new_s_c})"]
+        new_questions[num - 1] = [f"*{new_f_c}*", f"({new_s_c})"]
         res = ""
         for id, row in enumerate(new_questions):
             res += f"{id+1}. {row[0]}\n{row[1]}\n\n"
